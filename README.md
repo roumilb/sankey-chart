@@ -119,3 +119,7 @@ const dataLabels = {
 ## Examples
 
 You can find some example Sankey charts in the `examples` folder.
+
+## License
+
+This library is released under the MIT license. You are free to use, modify, and distribute it as you see fit. See the `LICENSE` file for more information.
