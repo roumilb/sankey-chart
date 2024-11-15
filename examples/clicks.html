@@ -1,0 +1,65 @@
+<html>
+	<head>
+		<style>
+			#sankey{
+				outline: 1px solid black;
+				width: 1600px;
+				height: 600px;
+			}
+		</style>
+		<script type="text/javascript" src="../dist/bundle.js"></script>
+	</head>
+	<body>
+		<div id="sankey"></div>
+		<script>
+            const data = [
+                {
+                    source: 'poi',
+                    target: 'jft',
+                    value: 10
+                },
+                {
+                    source: 'jft',
+                    target: 'azy',
+                    value: 4
+                },
+                {
+                    source: 'azy',
+                    target: 'syn',
+                    value: 4
+                },
+                {
+                    source: 'jft',
+                    target: 'vbs',
+                    value: 5
+                },
+                {
+                    source: 'vbs',
+                    target: 'msp',
+                    value: 2
+                },
+                {
+                    source: 'syn',
+                    target: 'zxp',
+                    value: 2
+                },
+                {
+                    source: 'syn',
+                    target: 'ygh',
+                    value: 1
+                }
+            ];
+
+            SankeyChart.display({
+                id: 'sankey',
+                data,
+                nodeClickCallback: (nodeId) => {
+                    console.log(`Node clicked: ${nodeId}`);
+                },
+                linkClickCallback: (node) => {
+                    console.log(`Link clicked: ${node.source} -> ${node.target} (${node.value})`);
+                }
+            });
+		</script>
+	</body>
+</html>
