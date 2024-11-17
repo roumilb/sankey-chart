@@ -68,16 +68,18 @@ To use the Sankey chart library, simply download and include the `bundle.js` fil
 
 The `SankeyChart.display()` function accepts an options object with the following properties:
 
-| Option                      | Type                              | Description                                                       |
-|-----------------------------|-----------------------------------|-------------------------------------------------------------------|
-| `id`                        | `string`                          | ID of the DOM element where the chart will be displayed.          |
-| `data`                      | `[]`                              | Array of data objects containing `source`, `target`, and `value`. |
-| `nodeClickCallback`         | `(source) => {}`                  | (optional) Callback function triggered when a node is clicked.    |
-| `linkClickCallback`         | `({source, target, value}) => {}` | (optional) Callback function triggered when a link is clicked.    |
-| `labels`                    | `{}`                              | (optional) Custom labels for the nodes and links.                 |
-| `link.backgroundColor`      | `string`                          | (optional) Default background color for links.                    |
-| `link.hoverBackgroundColor` | `string`                          | (optional) Hover background color for links.                      |
-| `node.backgroundColor`      | `string`                          | (optional) Default background color for nodes.                    |
+| Option                      | Type                              | Description                                                                         |
+|-----------------------------|-----------------------------------|-------------------------------------------------------------------------------------|
+| `id`                        | `string`                          | ID of the DOM element where the chart will be displayed.                            |
+| `data`                      | `[]`                              | Array of data objects containing `source`, `target`, and `value`.                   |
+| `nodeClickCallback`         | `(source) => {}`                  | (optional) Callback function triggered when a node is clicked.                      |
+| `linkClickCallback`         | `({source, target, value}) => {}` | (optional) Callback function triggered when a link is clicked.                      |
+| `iteractivity`              | `boolean` By default `false`      | (optional) True if you want to be able to click on node to hide or show child links |
+| `iterationHidden`           | `number`                          | (optional) Set a number if you want to hide every node after X levels               |
+| `labels`                    | `{}`                              | (optional) Custom labels for the nodes and links.                                   |
+| `link.backgroundColor`      | `string`                          | (optional) Default background color for links.                                      |
+| `link.hoverBackgroundColor` | `string`                          | (optional) Hover background color for links.                                        |
+| `node.backgroundColor`      | `string`                          | (optional) Default background color for nodes.                                      |
 
 ### Data Format
 
@@ -116,9 +118,32 @@ const dataLabels = {
 };
 ```
 
+### Interactivity
+
+The `interactivity` option allows you to enable or disable interactivity on the chart. When interactivity is enabled, you can click on a node to hide or show its child links. This can be useful for exploring the data in more detail.
+
+Also, you can set the `iterationHidden` option to hide every node after X levels. Check the example `examples/interactivity.html` to see how it works.
+
 ## Examples
 
 You can find some example Sankey charts in the `examples` folder.
+
+## Development
+
+To build the library, run the following commands:
+
+```bash
+npm install
+npm run build
+```
+
+This will generate the `bundle.js` file in the `dist` folder.
+
+To run the build and watch for changes, run:
+
+```bash
+npm run watch
+```
 
 ## License
 
