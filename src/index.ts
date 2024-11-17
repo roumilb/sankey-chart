@@ -192,8 +192,14 @@ const sankey: Sankey = {
 
             const label = this.labels[node.id] ? this.labels[node.id] : node.id;
 
-            const needToHide = this.iterationHidden && level >= this.iterationHidden
-            this.nodeDisplayStates[node.id] = !needToHide;
+            const needToHide = this.iterationHidden && level >= this.iterationHidden;
+            const needToHideParent = this.iterationHidden && level === this.iterationHidden - 1;
+
+            if (needToHide || needToHideParent) {
+                this.nodeDisplayStates[node.id] = false;
+            } else {
+                this.nodeDisplayStates[node.id] = true;
+            }
 
             const displayValue = needToHide ? 'none' : 'flex';
 
@@ -326,8 +332,9 @@ const sankey: Sankey = {
                     return;
                 }
 
-                const needToHide = this.nodeDisplayStates[nodeSourceId] === undefined ? true : !this.nodeDisplayStates[nodeSourceId];
-                this.nodeDisplayStates[nodeSourceId] = needToHide;
+                // this.nodeDisplayStates store if the node is hidden or not
+                const needToHide = this.nodeDisplayStates[nodeSourceId] === undefined ? true : this.nodeDisplayStates[nodeSourceId];
+                this.nodeDisplayStates[nodeSourceId] = !needToHide;
 
                 const nodeIdsToToggle = this.getAllNodeChildrenFromNode(nodeSourceId);
 
@@ -337,7 +344,7 @@ const sankey: Sankey = {
 
                 const displayValue = needToHide ? 'none' : 'block';
                 nodeIdsToToggle.forEach((nodeId) => {
-                    this.nodeDisplayStates[nodeId] = needToHide;
+                    this.nodeDisplayStates[nodeId] = !needToHide;
                     const nodeElement = document.getElementById(`node_${nodeId}`);
                     if (nodeElement) {
                         nodeElement.style.display = displayValue;
