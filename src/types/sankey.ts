@@ -36,6 +36,9 @@ export type Sankey = {
     linkClickCallback: LinkClickCallback | null,
     nodeElements: NodeListOf<HTMLElement> | null,
     linkElements: NodeListOf<HTMLElement> | null,
+    isInteractive: boolean,
+    nodeDisplayStates: Record<string, boolean>,
+    iterationHidden: number | null,
     defaultValues: DefaultValues,
     labels: Label,
     display: (options: Options) => void,
@@ -54,5 +57,6 @@ export type Sankey = {
     setNodeClick: () => void,
     setLinkClick: () => void,
     setNodeHover: () => void,
-    getHistoryForNode: (nodeId: string) => string[] | null
+    getHistoryForNode: (nodeId: string) => string[] | null,
+    getAllNodeChildrenFromNode: (nodeId: string) => string[] | null,
 }

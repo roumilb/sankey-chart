@@ -14,4 +14,6 @@ export type Options = {
     node: {
         backgroundColor: string;
     };
+    interactive: boolean;
+    iterationHidden: number | undefined;
 };
