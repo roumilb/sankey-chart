@@ -21,6 +21,9 @@ const sankey: Sankey = {
     linkClickCallback: null,
     nodeElements: null,
     linkElements: null,
+    isInteractive: false,
+    nodeDisplayStates: {},
+    iterationHidden: null,
     defaultValues: {
         link: {
             fillColor: 'rgba(229, 246, 254, 0.5)',
@@ -104,6 +107,10 @@ const sankey: Sankey = {
                 this.defaultValues.node.backgroundColor = options.node.backgroundColor;
             }
         }
+
+        this.isInteractive = options.interactive ?? false;
+
+        this.iterationHidden = options.iterationHidden ?? null;
     },
     configureChartElement: function (): void {
         if (this.chartElement) {
@@ -185,9 +192,16 @@ const sankey: Sankey = {
 
             const label = this.labels[node.id] ? this.labels[node.id] : node.id;
 
-            const style = `height: ${height}px; background: ${this.defaultValues.node.backgroundColor};`;
+            const needToHide = this.iterationHidden && level >= this.iterationHidden
+            this.nodeDisplayStates[node.id] = !needToHide;
 
-            this.htmlElement[level].push(`<div id="node_${node.id}" class="sankey_chart_node" style="${style}"><div class="sankey_chart_node_label">${label}</div></div>`);
+            const displayValue = needToHide ? 'none' : 'flex';
+
+            const style = `height: ${height}px; background: ${this.defaultValues.node.backgroundColor}; display: ${displayValue}`;
+
+            this.htmlElement[level].push(`<div id="node_${node.id}" class="sankey_chart_node" style="${style}">
+                                            <div class="sankey_chart_node_label">${label}</div>
+                                          </div>`);
 
             if (node.children.length) {
                 return this.fillNodeHtmlElement(node.children, level + 1);
@@ -230,9 +244,16 @@ const sankey: Sankey = {
 
                 const sourceNode = document.getElementById(`node_${index}`);
                 const targetNode = document.getElementById(`node_${child}`);
+
                 if (!sourceNode || !targetNode || !linkElement) {
                     throw new Error('Invalid sourceNode or targetNode element');
                 }
+
+                if (targetNode && targetNode.style.display === 'none') {
+                    linkElement.setAttribute('d', '');
+                    return;
+                }
+
                 const sourceNodeRect = sourceNode.getBoundingClientRect();
                 const targetNodeRect = targetNode.getBoundingClientRect();
 
@@ -289,10 +310,6 @@ const sankey: Sankey = {
         this.linkElements = document.querySelectorAll('.sankey_chart_link');
     },
     setNodeClick: function () {
-        if (!this.nodeClickCallback) {
-            return;
-        }
-
         if (!this.nodeElements) {
             throw new Error('Invalid node elements');
         }
@@ -301,8 +318,32 @@ const sankey: Sankey = {
             node.addEventListener('click', () => {
                 const nodeSourceId = node.id.replace('node_', '');
 
-                // @ts-ignore
-                this.nodeClickCallback(nodeSourceId);
+                if (this.nodeClickCallback) {
+                    this.nodeClickCallback(nodeSourceId);
+                }
+
+                if (!this.isInteractive) {
+                    return;
+                }
+
+                const needToHide = this.nodeDisplayStates[nodeSourceId] === undefined ? true : !this.nodeDisplayStates[nodeSourceId];
+                this.nodeDisplayStates[nodeSourceId] = needToHide;
+
+                const nodeIdsToToggle = this.getAllNodeChildrenFromNode(nodeSourceId);
+
+                if (!nodeIdsToToggle) {
+                    return;
+                }
+
+                const displayValue = needToHide ? 'none' : 'block';
+                nodeIdsToToggle.forEach((nodeId) => {
+                    this.nodeDisplayStates[nodeId] = needToHide;
+                    const nodeElement = document.getElementById(`node_${nodeId}`);
+                    if (nodeElement) {
+                        nodeElement.style.display = displayValue;
+                    }
+                });
+                this.drawPath();
             });
         });
     },
@@ -378,6 +419,38 @@ const sankey: Sankey = {
             const history: string[] | null = findNode(node, []);
             if (history) {
                 return history;
+            }
+        }
+
+        return null;
+    },
+    getAllNodeChildrenFromNode: function (nodeId: string): string[] | null {
+        if (!this.dataAsTree) {
+            throw new Error('Invalid data, data is required');
+        }
+
+        const findNodeChildren = (node: Node, childIds: string[], nodeFound: boolean): string[] => {
+            if (nodeFound) {
+                childIds.push(node.id);
+            }
+
+            if (node.id === nodeId) {
+                nodeFound = true;
+            }
+
+            if (node.children.length) {
+                for (let child of node.children) {
+                    findNodeChildren(child, childIds, nodeFound);
+                }
+            }
+
+            return childIds;
+        }
+
+        for (let node of this.dataAsTree) {
+            const children: string[] = findNodeChildren(node, [], false);
+            if (children.length) {
+                return children;
             }
         }
 
