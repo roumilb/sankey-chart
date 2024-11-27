@@ -251,7 +251,12 @@ const sankey: Sankey = {
                 const sourceNode = document.getElementById(`node_${index}`);
                 const targetNode = document.getElementById(`node_${child}`);
 
-                if (!sourceNode || !targetNode || !linkElement) {
+                if (!targetNode) {
+                    console.log(`Target node ${child} not found`);
+                    return;
+                }
+
+                if (!sourceNode || !linkElement) {
                     throw new Error('Invalid sourceNode or targetNode element');
                 }
 
