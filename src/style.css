@@ -2,38 +2,40 @@
 	display: flex;
 	flex-direction: row;
 	gap: 1rem;
+
+	#sankey_chart_svg_container{
+		position: absolute;
+		z-index: 1;
+
+		.sankey_chart_link{
+			transition: .2s;
+		}
+	}
+
+	.sankey_chart_node_container{
+		display: flex;
+		flex-direction: column;
+		gap: .5rem;
+		width: 20px;
+
+		.sankey_chart_node{
+			width: 100%;
+			z-index: 2;
+			cursor: pointer;
+			position: relative;
+
+			.sankey_chart_node_label{
+				position: absolute;
+				left: 100%;
+				padding-left: 5px;
+				top: 5px;
+				user-select: none;
+			}
+		}
+	}
+
+	.sankey_chart_grow{
+		flex-grow: 1;
+	}
 }
 
-.sankey_chart_container #sankey_chart_svg_container{
-	position: absolute;
-	z-index: 1;
-}
-
-.sankey_chart_container #sankey_chart_svg_container .sankey_chart_link{
-	transition: .2s;
-}
-
-.sankey_chart_container .sankey_chart_node_container{
-	display: flex;
-	flex-direction: column;
-	gap: .5rem;
-	width: 20px;
-}
-
-.sankey_chart_container .sankey_chart_node_container .sankey_chart_node{
-	width: 100%;
-	z-index: 2;
-	cursor: pointer;
-	position: relative;
-}
-
-.sankey_chart_container .sankey_chart_node_container .sankey_chart_node .sankey_chart_node_label{
-	position: absolute;
-	left: 100%;
-	padding-left: 5px;
-	top: 5px;
-}
-
-.sankey_chart_container .sankey_chart_grow{
-	flex-grow: 1;
-}

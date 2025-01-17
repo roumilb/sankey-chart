@@ -15,6 +15,7 @@ export type Options = {
     node: {
         backgroundColor: string
     },
-    interactive: boolean,
+    interactive: boolean | undefined,
+    interactiveType: 'click' | 'dbclick' | undefined,
     iterationHidden: number | undefined
 }

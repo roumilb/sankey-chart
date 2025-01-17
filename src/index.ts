@@ -22,6 +22,7 @@ const sankey: Sankey = {
     nodeElements: null,
     linkElements: null,
     isInteractive: false,
+    interactiveType: 'click',
     nodeDisplayStates: {},
     iterationHidden: null,
     defaultValues: {
@@ -109,6 +110,7 @@ const sankey: Sankey = {
         }
 
         this.isInteractive = options.interactive ?? false;
+        this.interactiveType = options.interactiveType ?? 'click';
 
         this.iterationHidden = options.iterationHidden ?? null;
     },
@@ -326,7 +328,7 @@ const sankey: Sankey = {
         }
 
         this.nodeElements.forEach((node) => {
-            node.addEventListener('click', () => {
+            node.addEventListener(this.interactiveType, () => {
                 const nodeSourceId = node.id.replace('node_', '');
 
                 if (this.nodeClickCallback) {

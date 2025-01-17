@@ -74,7 +74,8 @@ The `SankeyChart.display()` function accepts an options object with the followin
 | `data`                      | `[]`                              | Array of data objects containing `source`, `target`, and `value`.                   |
 | `nodeClickCallback`         | `(source) => {}`                  | (optional) Callback function triggered when a node is clicked.                      |
 | `linkClickCallback`         | `({source, target, value}) => {}` | (optional) Callback function triggered when a link is clicked.                      |
-| `iteractivity`              | `boolean` By default `false`      | (optional) True if you want to be able to click on node to hide or show child links |
+| `interactive`               | `boolean` By default `false`      | (optional) True if you want to be able to click on node to hide or show child links |
+| `interactiveType`           | `click` OR `dbclick`              | (optional) By default `click`                                                       | (optional) True if you want to be able to click on node to hide or show child links |
 | `iterationHidden`           | `number`                          | (optional) Set a number if you want to hide every node after X levels               |
 | `labels`                    | `{}`                              | (optional) Custom labels for the nodes and links.                                   |
 | `link.backgroundColor`      | `string`                          | (optional) Default background color for links.                                      |

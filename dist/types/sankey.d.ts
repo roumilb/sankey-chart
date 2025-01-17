@@ -35,6 +35,7 @@ export type Sankey = {
     nodeElements: NodeListOf<HTMLElement> | null;
     linkElements: NodeListOf<HTMLElement> | null;
     isInteractive: boolean;
+    interactiveType: 'click' | 'dbclick';
     nodeDisplayStates: Record<string, boolean>;
     iterationHidden: number | null;
     defaultValues: DefaultValues;
