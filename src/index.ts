@@ -52,6 +52,7 @@ const sankey: Sankey = {
         this.setNodeClick();
         this.setLinkClick();
         this.setNodeHover();
+        this.setLinkHover();
     },
     setData: function (options: Options): void {
         if (!options.id) {
@@ -404,6 +405,25 @@ const sankey: Sankey = {
                     });
                 });
             });
+        });
+    },
+    setLinkHover: function () {
+        if (!this.linkElements) {
+            throw new Error('Invalid link elements');
+        }
+
+        this.linkElements.forEach((link: HTMLElement) => {
+            link.addEventListener('mouseover', function () {
+                this.style.fill = sankey.defaultValues.link.hoverFillColor;
+
+                // @ts-ignore
+                this.addEventListener('mouseout', () => {
+                    // @ts-ignore
+                    sankey.linkElements.forEach((link: HTMLElement) => {
+                        link.style.fill = sankey.defaultValues.link.fillColor;
+                    });
+                });
+            })
         });
     },
     getHistoryForNode: function (nodeId: string): string[] | null {

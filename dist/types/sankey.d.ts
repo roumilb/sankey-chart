@@ -56,6 +56,7 @@ export type Sankey = {
     setNodeClick: () => void;
     setLinkClick: () => void;
     setNodeHover: () => void;
+    setLinkHover: () => void;
     getHistoryForNode: (nodeId: string) => string[] | null;
     getAllNodeChildrenFromNode: (nodeId: string) => string[] | null;
 };
