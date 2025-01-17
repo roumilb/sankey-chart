@@ -68,19 +68,19 @@ To use the Sankey chart library, simply download and include the `bundle.js` fil
 
 The `SankeyChart.display()` function accepts an options object with the following properties:
 
-| Option                      | Type                              | Description                                                                         |
-|-----------------------------|-----------------------------------|-------------------------------------------------------------------------------------|
-| `id`                        | `string`                          | ID of the DOM element where the chart will be displayed.                            |
-| `data`                      | `[]`                              | Array of data objects containing `source`, `target`, and `value`.                   |
-| `nodeClickCallback`         | `(source) => {}`                  | (optional) Callback function triggered when a node is clicked.                      |
-| `linkClickCallback`         | `({source, target, value}) => {}` | (optional) Callback function triggered when a link is clicked.                      |
-| `interactive`               | `boolean` By default `false`      | (optional) True if you want to be able to click on node to hide or show child links |
-| `interactiveType`           | `click` OR `dbclick`              | (optional) By default `click`                                                       | (optional) True if you want to be able to click on node to hide or show child links |
-| `iterationHidden`           | `number`                          | (optional) Set a number if you want to hide every node after X levels               |
-| `labels`                    | `{}`                              | (optional) Custom labels for the nodes and links.                                   |
-| `link.backgroundColor`      | `string`                          | (optional) Default background color for links.                                      |
-| `link.hoverBackgroundColor` | `string`                          | (optional) Hover background color for links.                                        |
-| `node.backgroundColor`      | `string`                          | (optional) Default background color for nodes.                                      |
+| Option                      | Type                               | Description                                                                                                                                          |
+|-----------------------------|------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `id`                        | `string`                           | ID of the DOM element where the chart will be displayed.                                                                                             |
+| `data`                      | `[]`                               | Array of data objects containing `source`, `target`, and `value`.                                                                                    |
+| `nodeClickCallback`         | `(source, isLastNodeBranch) => {}` | (optional) Callback function triggered when a node is clicked, the params `isLastNodeBranch` return true if it's the last node of the sankey branch. |
+| `linkClickCallback`         | `({source, target, value}) => {}`  | (optional) Callback function triggered when a link is clicked.                                                                                       |
+| `interactive`               | `boolean` By default `false`       | (optional) True if you want to be able to click on node to hide or show child links                                                                  |
+| `interactiveType`           | `click` OR `dbclick`               | (optional) By default `click`                                                                                                                        | (optional) True if you want to be able to click on node to hide or show child links |
+| `iterationHidden`           | `number`                           | (optional) Set a number if you want to hide every node after X levels                                                                                |
+| `labels`                    | `{}`                               | (optional) Custom labels for the nodes and links.                                                                                                    |
+| `link.backgroundColor`      | `string`                           | (optional) Default background color for links.                                                                                                       |
+| `link.hoverBackgroundColor` | `string`                           | (optional) Hover background color for links.                                                                                                         |
+| `node.backgroundColor`      | `string`                           | (optional) Default background color for nodes.                                                                                                       |
 
 ### Data Format
 

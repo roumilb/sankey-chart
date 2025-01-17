@@ -332,8 +332,24 @@ const sankey: Sankey = {
             node.addEventListener(this.interactiveType, () => {
                 const nodeSourceId = node.id.replace('node_', '');
 
+                const nodeIdsToToggle = this.getAllNodeChildrenFromNode(nodeSourceId);
+
                 if (this.nodeClickCallback) {
-                    this.nodeClickCallback(nodeSourceId);
+                    let isLast = nodeIdsToToggle === null;
+
+                    if (!isLast) {
+                        let countNodeExist = 0;
+                        // @ts-ignore
+                        nodeIdsToToggle.forEach((nodeId) => {
+                            if (document.getElementById(`node_${nodeId}`)) {
+                                countNodeExist++;
+                            }
+                        });
+
+                        isLast = countNodeExist === 0;
+                    }
+
+                    this.nodeClickCallback(nodeSourceId, isLast);
                 }
 
                 if (!this.isInteractive) {
@@ -343,8 +359,6 @@ const sankey: Sankey = {
                 // this.nodeDisplayStates store if the node is hidden or not
                 const needToHide = this.nodeDisplayStates[nodeSourceId] === undefined ? true : this.nodeDisplayStates[nodeSourceId];
                 this.nodeDisplayStates[nodeSourceId] = !needToHide;
-
-                const nodeIdsToToggle = this.getAllNodeChildrenFromNode(nodeSourceId);
 
                 if (!nodeIdsToToggle) {
                     return;

@@ -46,7 +46,7 @@
                 {
                     source: 'syn',
                     target: 'ygh',
-                    value: 1
+                    value: 0
                 }
             ];
 
@@ -54,7 +54,10 @@
                 id: 'sankey',
                 data,
                 interactive: true,
-                iterationHidden: 3
+                iterationHidden: 3,
+                nodeClickCallback: (nodeId, isLast) => {
+                    console.log(isLast);
+                }
             });
 		</script>
 	</body>
