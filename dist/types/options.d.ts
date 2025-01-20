@@ -17,4 +17,5 @@ export type Options = {
     interactive: boolean | undefined;
     interactiveType: 'click' | 'dbclick' | undefined;
     iterationHidden: number | undefined;
+    interactiveOn: 'node' | 'link' | undefined;
 };

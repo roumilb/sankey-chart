@@ -36,6 +36,7 @@ export type Sankey = {
     linkElements: NodeListOf<HTMLElement> | null;
     isInteractive: boolean;
     interactiveType: 'click' | 'dbclick';
+    interactiveOn: 'node' | 'link';
     nodeDisplayStates: Record<string, boolean>;
     iterationHidden: number | null;
     defaultValues: DefaultValues;
@@ -55,6 +56,7 @@ export type Sankey = {
     setLinkElements: () => void;
     setNodeClick: () => void;
     setLinkClick: () => void;
+    setInteractiveClick: (interactiveOn: 'node' | 'link', nodeId: string) => void;
     setNodeHover: () => void;
     setLinkHover: () => void;
     getHistoryForNode: (nodeId: string) => string[] | null;

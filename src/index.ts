@@ -23,6 +23,7 @@ const sankey: Sankey = {
     linkElements: null,
     isInteractive: false,
     interactiveType: 'click',
+    interactiveOn: 'node',
     nodeDisplayStates: {},
     iterationHidden: null,
     defaultValues: {
@@ -112,6 +113,7 @@ const sankey: Sankey = {
 
         this.isInteractive = options.interactive ?? false;
         this.interactiveType = options.interactiveType ?? 'click';
+        this.interactiveOn = options.interactiveOn ?? 'node';
 
         this.iterationHidden = options.iterationHidden ?? null;
     },
@@ -352,35 +354,12 @@ const sankey: Sankey = {
                     this.nodeClickCallback(nodeSourceId, isLast);
                 }
 
-                if (!this.isInteractive) {
-                    return;
-                }
 
-                // this.nodeDisplayStates store if the node is hidden or not
-                const needToHide = this.nodeDisplayStates[nodeSourceId] === undefined ? true : this.nodeDisplayStates[nodeSourceId];
-                this.nodeDisplayStates[nodeSourceId] = !needToHide;
-
-                if (!nodeIdsToToggle) {
-                    return;
-                }
-
-                const displayValue = needToHide ? 'none' : 'block';
-                nodeIdsToToggle.forEach((nodeId) => {
-                    this.nodeDisplayStates[nodeId] = !needToHide;
-                    const nodeElement = document.getElementById(`node_${nodeId}`);
-                    if (nodeElement) {
-                        nodeElement.style.display = displayValue;
-                    }
-                });
-                this.drawPath();
+                this.setInteractiveClick('node', nodeSourceId);
             });
         });
     },
     setLinkClick: function () {
-        if (!this.linkClickCallback) {
-            return;
-        }
-
         if (!this.linkElements) {
             throw new Error('Invalid link elements');
         }
@@ -390,9 +369,39 @@ const sankey: Sankey = {
                 const [source, target] = link.id.split('-');
 
                 // @ts-ignore
-                this.linkClickCallback(this.getLink(source, target));
+                if (this.linkClickCallback) {
+                    // @ts-ignore
+                    this.linkClickCallback(this.getLink(source, target));
+                }
+
+                this.setInteractiveClick('link', target);
             });
         });
+    },
+    setInteractiveClick: function (interactiveOn: 'node' | 'link', nodeId: string) {
+        if (!this.isInteractive || this.interactiveOn !== interactiveOn) {
+            return;
+        }
+
+        const nodeIdsToToggle = this.getAllNodeChildrenFromNode(nodeId);
+
+        // this.nodeDisplayStates store if the node is hidden or not
+        const needToHide = this.nodeDisplayStates[nodeId] === undefined ? true : this.nodeDisplayStates[nodeId];
+        this.nodeDisplayStates[nodeId] = !needToHide;
+
+        if (!nodeIdsToToggle) {
+            return;
+        }
+
+        const displayValue = needToHide ? 'none' : 'block';
+        nodeIdsToToggle.forEach((nodeId) => {
+            this.nodeDisplayStates[nodeId] = !needToHide;
+            const nodeElement = document.getElementById(`node_${nodeId}`);
+            if (nodeElement) {
+                nodeElement.style.display = displayValue;
+            }
+        });
+        this.drawPath();
     },
     setNodeHover: function () {
         if (!this.nodeElements || !this.linkElements) {
